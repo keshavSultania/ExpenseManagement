@@ -3,7 +3,7 @@ import List from "../List";
 import Dropdown from "../Dropdown";
 import Billform from "../BillForm";
 import styled from "styled-components";
-import { addBill } from "../../redux/actions/bill";
+import { deleteBill } from "../../redux/actions/bill";
 import { toggleBillForm } from "../../redux/actions/billform";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -37,6 +37,10 @@ const BillContainer = () => {
     dispatch(toggleBillForm(d));
     console.log("button clicked", d);
   };
+
+  const deleteButtonclick = (id) => {
+    dispatch(deleteBill(id));
+  };
   return (
     <ParentWrapper>
       <StyledUtilityWrapper>
@@ -47,6 +51,7 @@ const BillContainer = () => {
       {showBillForm && <Billform defaultData={editFormData} />}
       <List
         buttonClick={buttonClick}
+        deleteButtonclick={deleteButtonclick}
         data={selectedFilter !== "None" ? filteredData : unFilteredData}
       />
     </ParentWrapper>

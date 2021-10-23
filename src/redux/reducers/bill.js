@@ -1,6 +1,7 @@
 import {
   ADD_BILL,
   FILTER_DATA,
+  DELETE_BILL,
   RESET_FILTER,
   EDIT_BILL
 } from "../actions/bill";
@@ -94,6 +95,21 @@ export default (state = initialState, action) => {
         ...state,
         data: newDataArray,
         filteredData: newFilteredArray
+      };
+    case DELETE_BILL:
+      const newDataArrayAfterDelete = state.data.filter(
+        (d) => d.id !== action.payload
+      );
+      let newFilteredArrayAfterDelete;
+      if (state.filter !== "None") {
+        newFilteredArrayAfterDelete = newDataArrayAfterDelete.filter(
+          (d) => d.category === state.filter
+        );
+      }
+      return {
+        ...state,
+        data: newDataArrayAfterDelete,
+        filteredData: newFilteredArrayAfterDelete
       };
     case FILTER_DATA:
       const newData = state.data.filter((d) => d.category === action.payload);
