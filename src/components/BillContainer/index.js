@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import List from "../List";
 import Dropdown from "../Dropdown";
 import Billform from "../BillForm";
@@ -6,17 +6,9 @@ import styled from "styled-components";
 import { deleteBill } from "../../redux/actions/bill";
 import { toggleBillForm } from "../../redux/actions/billform";
 import { useDispatch, useSelector } from "react-redux";
+import TimeSeries from "../TimeSeries";
 
 const ParentWrapper = styled.div``;
-
-// const OverLay = styled.div`
-//   background-color: black;
-//   z-index: 100;
-//   opacity: 0.7;
-//   position: absolute;
-//   height: 100%;
-//   width: 100%;
-// `;
 
 const StyledUtilityWrapper = styled.div`
   display: flex;
@@ -26,34 +18,50 @@ const StyledUtilityWrapper = styled.div`
 const BillContainer = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const [budget, setBudget] = useState(0);
+  const [showgraph, setShowGraph] = useState(false);
   const { bill, billform } = state;
-  console.log(bill);
   const { show: showBillForm, editFormData } = billform;
-  const unFilteredData = useSelector((state) => state.bill.data);
-  const filteredData = useSelector((state) => state.bill.filteredData);
-  const selectedFilter = useSelector((state) => state.bill.filter);
+  const unFilteredData = bill.data;
+  const filteredData = bill.filteredData;
+  const selectedFilter = bill.filter;
 
   const buttonClick = (d) => {
     dispatch(toggleBillForm(d));
-    console.log("button clicked", d);
   };
 
   const deleteButtonclick = (id) => {
     dispatch(deleteBill(id));
   };
+
+  const budgetHandler = (e) => {
+    setBudget(e.target.value);
+  };
+
+  const showTimeSeries = () => {
+    setShowGraph(!showgraph);
+  };
+
   return (
     <ParentWrapper>
       <StyledUtilityWrapper>
         <Dropdown />
+        <div>
+          Budget
+          <input value={budget} onChange={budgetHandler} />
+        </div>
         <button onClick={() => buttonClick()}> Add </button>
+        <button onClick={() => showTimeSeries()}> Show Time Series </button>
       </StyledUtilityWrapper>
-      {/* <OverLay /> */}
       {showBillForm && <Billform defaultData={editFormData} />}
       <List
         buttonClick={buttonClick}
         deleteButtonclick={deleteButtonclick}
         data={selectedFilter !== "None" ? filteredData : unFilteredData}
       />
+      {showgraph && (
+        <TimeSeries bills={unFilteredData} closeClick={showTimeSeries} />
+      )}
     </ParentWrapper>
   );
 };
