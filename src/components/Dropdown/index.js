@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { filterBills, resetFilter } from "../../redux/actions/bill";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const Dropdown = () => {
   const dispatch = useDispatch();
