@@ -25,6 +25,7 @@ const Dropdown = () => {
   };
   return (
     <div>
+      Filter{"  "}
       <select value={value} onChange={(e) => onSelectHandler(e)}>
         {categories.map((d) => {
           return (

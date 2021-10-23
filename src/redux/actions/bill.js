@@ -1,5 +1,6 @@
 export const ADD_BILL = "ADD_BILL";
 export const EDIT_BILL = "EDIT_BILL";
+export const BUDGET_BILLS = "BUDGET_BILLS";
 export const DELETE_BILL = "DELETE_BILL";
 export const FILTER_DATA = "FILTER_DATA";
 export const RESET_FILTER = "RESET_FILTER";
@@ -22,6 +23,16 @@ export const deleteBill = (id) => {
   return {
     type: DELETE_BILL,
     payload: id
+  };
+};
+
+export const hightlightBills = (budget, numBills) => {
+  return {
+    type: BUDGET_BILLS,
+    payload: {
+      budget: budget,
+      numBills: numBills
+    }
   };
 };
 

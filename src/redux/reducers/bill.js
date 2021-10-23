@@ -3,7 +3,8 @@ import {
   FILTER_DATA,
   DELETE_BILL,
   RESET_FILTER,
-  EDIT_BILL
+  EDIT_BILL,
+  BUDGET_BILLS
 } from "../actions/bill";
 
 const initialState = {
@@ -116,6 +117,24 @@ export default (state = initialState, action) => {
       return { ...state, filteredData: newData, filter: action.payload };
     case RESET_FILTER:
       return { ...state, filteredData: [], filter: action.payload };
+    case BUDGET_BILLS:
+      let budget = Number(action.payload.budget);
+      const arr = state.data;
+      arr.sort((a, b) => b.amount - a.amount);
+      arr.forEach((e) => {
+        if (budget - Number(e.amount) >= 0) {
+          console.log(budget - Number(e.amount));
+          e.highlight = true;
+          budget = budget - Number(e.amount);
+        } else {
+          e.highlight = false;
+        }
+      });
+      console.log(arr);
+      return {
+        ...state,
+        data: arr
+      };
     default:
       return state;
   }
